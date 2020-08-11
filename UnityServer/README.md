@@ -1,7 +1,7 @@
 Unity: Google Play Billing Server Sample
 =====================================================
 
-This is the Node.js server in TypeScript that use Cloud Functions from Firebase to save and get data from the database Firestore for the TrivialKart game
+This is the Node.js server in TypeScript that use Cloud Functions from Firebase to save and get data from the database Firestore for the game TrivialKart in
 [Unity](https://github.com/zkzhao333/play-unity-plugins/tree/master/GooglePlayPlugins/com.google.play.billing/Samples/TrivialKart)
 
 # Deploy Backend Server
@@ -9,10 +9,10 @@ This is the Node.js server in TypeScript that use Cloud Functions from Firebase 
 **Before deploying the backend server, you should make sure you've completed the steps to
 [setup the Unity game with the Play Developer Console](https://github.com/zkzhao333/play-unity-plugins/blob/master/GooglePlayPlugins/com.google.play.billing/Samples/TrivialKart/README.md).**
 
-1. Make sure you have installed Node.js, npm, and Firebase CLI [Firebase CLI](https://firebase.google.com/docs/cli/)
+1. Make sure you have installed Node.js, npm, and [Firebase CLI](https://firebase.google.com/docs/cli/)
 
-2. When you Run `firebase init` make sure you select **Functions**, **TypeScript** and **Do not overwrite any file**
+2. When you run `firebase init` make sure you select **Functions**, **TypeScript** and **Do not overwrite any file**
 
-3. Then go to `cd functions` and Run `npm install`
+3. Then go to `cd functions` and run `npm install`
 
-4. Run `firebase deploy` to deploy your backend to Cloud Functions for Firebase
+4. Run `firebase deploy` to deploy your server to Cloud Functions for Firebase
