@@ -1,7 +1,7 @@
 Unity: Google Play Billing Server Sample
 =====================================================
 
-This is the Node.js server in TypeScript that use Cloud Functions from Firebase to save and get data from the database Firestore for the game TrivialKart in
+This is the Node.js server in TypeScript that use Cloud Functions for the game TrivialKart in
 [Unity](https://github.com/zkzhao333/play-unity-plugins/tree/master/GooglePlayPlugins/com.google.play.billing/Samples/TrivialKart)
 
 # Deploy Backend Server
