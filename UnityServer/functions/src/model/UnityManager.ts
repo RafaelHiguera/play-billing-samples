@@ -104,7 +104,7 @@ export class UnityManager {
           return this.verifier.verifySub(receipt).then((result: any) => {
             console.log(result.payload);
             if (result.payload.priceChange !== undefined && result.payload.priceChange.state === 0) {
-              return new UnityStatus(true, "Subscription price change and has not been accepted by user");
+              return new UnityStatus(true, "Subscription price change and has not been accepted by user", receipt.productId);
             } else {
               return new UnityStatus(false, "Subscription price has not change or has been accepted by user");
             }
