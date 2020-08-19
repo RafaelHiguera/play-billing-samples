@@ -7,7 +7,7 @@ This is the Node.js server in TypeScript that use Cloud Functions for the game T
 # Deploy Backend Server
 
 **Before deploying the backend server, you should make sure you've completed the steps to
-[setup the Unity game with the Play Developer Console](https://github.com/zkzhao333/play-unity-plugins/blob/master/GooglePlayPlugins/com.google.play.billing/Samples/TrivialKart/README.md).**
+[setup the Unity game with the Play Developer Console](https://github.com/google/play-unity-plugins/tree/master/GooglePlayPlugins/com.google.play.billing/Samples/TrivialKart/README.md).**
 
 **Also make sure to replace the placeholderKey in the keys folder with your own key. This is a tutorial that shows how to do it : [Generate Key](https://medium.com/androidhub/how-to-validate-in-app-purchase-subscription-on-your-node-js-backend-a2b823470034).**
 

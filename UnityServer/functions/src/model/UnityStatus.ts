@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-
-/* UnityStatus is part of Model layer.
+/*
+ * UnityStatus is part of Model layer.
  * It's an entity that represents the response that the unity game will receive
  */
 export class UnityStatus {

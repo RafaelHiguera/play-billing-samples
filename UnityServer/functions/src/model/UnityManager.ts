@@ -23,9 +23,13 @@ const FIRESTORE_USERS_COLLECTION = 'users';
 const FIRESTORE_PURCHASES_COLLECTION = 'purchases';
 
 enum SkuType {
-  ONE_TIME = 'inapp',
+  INAPP = 'inapp',
   SUBS = 'subs'
 }
+
+// Make sure to add your subscriptions sku in this set
+var subscriptionSkus = new Set<string>(["silver_subscription", "golden_subscription"]);
+
 /* UnityManager is part of Model layer.
  * It manages request of users from the unity sample game.
  */
@@ -57,8 +61,8 @@ export class UnityManager {
       });
   }
 
-  //This functions takes a game data encode in json that is send from the unity game
-  //And saved it to in the users table with the userId as the key
+  // This functions takes a game data encode in json that is send from the unity game
+  // and saved it to in the users table with the userId as the key
   async saveGameData(userId: string, gameData: string): Promise<UnityStatus> {
     const valuesToSave = {
       gameData: gameData
@@ -72,8 +76,8 @@ export class UnityManager {
       });
   }
 
-  //This functions takes gets the game data encode in json that is saved in the users table
-  //with the userId as the key
+  // This functions takes gets the game data encode in json that is saved in the users table
+  // with the userId as the key
   async getGameData(userId: string): Promise<UnityStatus> {
     return this.usersCollectionReference.doc(userId).get()
       .then(doc => {
@@ -86,7 +90,7 @@ export class UnityManager {
       });
   }
 
-  /*This method will verify if a subscription of a user has change price ( more info :
+  /*This method verifies if a subscription of a user has change price ( more info :
       https://developer.android.com/google/play/billing/subs#price-change-communicate )
    It will get the current subscription receipt and call the play developer api to check
    if there is a priceChange field and the state of the field is 0 = pending.
@@ -118,16 +122,16 @@ export class UnityManager {
         return new UnityStatus(false, error);
       });
   }
-  /* This function will verify with the json receipt send from the Google Play Billing api
+  /* This function verifies with the json receipt send from the Google Play Billing api
      To the client for additional security.
-      1) It will verify that the receipt is legit with the help of Google Play Developer api.
-      2) And will verify if the purchaseToken is unique in the database.
+      1) It verifies that the receipt is legit with the help of Google Play Developer api.
+      2) And verifies if the purchaseToken is unique in the database.
      * more information : https://developer.android.com/google/play/billing/security
   */
   async verifyAndSavePurchase(userId: string, jsonReceipt: string): Promise<UnityStatus> {
     const purchaseInformation = this.getReceiptAndPurchaseType(jsonReceipt);
 
-    if (purchaseInformation.purchaseType === SkuType.ONE_TIME) {
+    if (purchaseInformation.purchaseType === SkuType.INAPP) {
       return this.verifier.verifyINAPP(purchaseInformation.receipt).then(() => {
         return this.verifyPurchaseAndSaveInDB(userId, purchaseInformation.receipt);
       }).catch((error: any) => {
@@ -146,7 +150,7 @@ export class UnityManager {
     }
   }
 
-  // 2) verification of the purchase token in database and if it's not in the database
+  // 2) Verifies the purchase token in database and if it's not in the database
   //    it will save the receipt in purchases table.
   async verifyPurchaseAndSaveInDB(userId: string, receipt: any): Promise<UnityStatus> {
     receipt.userId = userId;
@@ -169,8 +173,8 @@ export class UnityManager {
       });
   }
 
-  //This is an additional save of the subscripton receipt in the users table for
-  // faster access when verifying price change of a subscripton for a user.
+  // This is an additional save of the subscripton receipt in the users table for
+  //  faster access when verifying price change of a subscripton for a user.
   async saveSubscriptionTokenInUsers(userId: string, receipt: any): Promise<UnityStatus> {
     return this.usersCollectionReference.doc(userId).collection("subscription").doc("receipt").set(receipt).then(() => {
       return new UnityStatus(true, "Save in database");
@@ -180,24 +184,22 @@ export class UnityManager {
   }
 
   private getReceiptAndPurchaseType(jsonReceipt: string) {
-    const receipt = JSON.parse(this.getReceiptData(jsonReceipt));
+    const receipt = this.getReceiptData(jsonReceipt);
     return { receipt: receipt, purchaseType: this.getPurchaseType(receipt.productId) }
   }
 
-  // Check if the product id is a subscription or a one time purchase
-  private getPurchaseType(productId: string) {
-    if (productId.includes('subscription')) {
+  // Check if the product sku is a subscription or a one time purchase
+  private getPurchaseType(productSku: string) {
+    if (subscriptionSkus.has(productSku)) {
       return SkuType.SUBS;
     }
     else {
-      return SkuType.ONE_TIME;
+      return SkuType.INAPP;
     }
   }
 
   // Editing the receipt for parsing it in json
   private getReceiptData(receipt: string) {
-    let receiptInfo = receipt;
-    receiptInfo = receiptInfo.replace(/\\/g, '');
-    return receiptInfo.slice(receiptInfo.search("orderId") - 2, receiptInfo.search("signature") - 3);
+    return JSON.parse(JSON.parse(JSON.parse(receipt).Payload).json)
   }
 }
