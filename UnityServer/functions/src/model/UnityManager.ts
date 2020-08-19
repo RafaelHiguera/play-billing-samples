@@ -122,6 +122,7 @@ export class UnityManager {
         return new UnityStatus(false, error);
       });
   }
+  
   /* This function verifies with the json receipt send from the Google Play Billing api
      To the client for additional security.
       1) It verifies that the receipt is legit with the help of Google Play Developer api.
