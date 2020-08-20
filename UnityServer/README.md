@@ -17,7 +17,9 @@ This is the Node.js server in TypeScript that use Cloud Functions for the game T
 
 3. Then go to `cd functions` and run `npm install`
 
-4. Run `firebase deploy` to deploy your server to Cloud Functions for Firebase
+4. Check in the **package.json file** that the **engines and dependencies arrays** have the latest version for each package
+
+5. Run `firebase deploy` to deploy your server to Cloud Functions for Firebase
 
 # Useful information
 
